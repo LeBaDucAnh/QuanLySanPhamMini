@@ -2,7 +2,8 @@
   import {Link} from "svelte-navigator";
   import {BASE_URL, PAGE_SIZE} from "../config";
 
-  let loading = false;
+  let loading = false;//khai báo lỗi k có sản phẩm
+  //Khai báo tìm kiếm sản phẩm
   let brandList = [];
   let priceRangeList = [
     {minPrice: null, maxPrice: null, name: 'Tất cả'},
@@ -11,11 +12,13 @@
     {minPrice: 20000000, maxPrice: null, name: 'Trên 20 triệu'},
   ];
   let productList = [];
-  let total = 0;
+  //Khai báo phân trang
+  let total = 0; 
   let page = 1;
   let numPage = 0;
   let start=0, end=null;
 
+  //Tạo biến tìm kiếm
   let searchParams = {
     keyword: '',
     brandId: null,
@@ -52,7 +55,6 @@
       loading = false; //done
       end = start + productList.length;
       numPage = Math.ceil(total/PAGE_SIZE);
-      //console.log('productList=', productList);
     });
   }
 
@@ -60,7 +62,6 @@
     let url = BASE_URL + '/api/get-all-brand';
     fetch(url).then(resp => resp.json()).then(result => {
       brandList = result;
-      //console.log('brandList=', brandList);
     });
   }
 
@@ -184,9 +185,9 @@
     font-weight: bold;
   }
 
-  .product-item,
-  .product-item:link,
-  .product-item:hover,
+  .product-item, 
+  .product-item:link, 
+  .product-item:hover, 
   .product-item:visited {
     text-decoration: none;
     color: black;

@@ -1,14 +1,13 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.serializers import ModelSerializer, CharField, DateTimeField
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from django.db.models import Q
 from datetime import datetime
 from .models import *
 
-#TEST
 @api_view(['GET', 'POST'])
-@permission_classes([IsAuthenticated])
 def hello(request):    
    return Response({"message" : "Hello world!"})
 
@@ -111,6 +110,7 @@ def save_order(request):
    return Response({'success': True})
 
 @api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def confirm_order(request, pk):
    order = Order.objects.get(pk=pk)
    order.status = Order.OrderStatus.DELIVERED
@@ -119,6 +119,7 @@ def confirm_order(request, pk):
    return Response({'success': True})
 
 @api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def cancel_order(request, pk):
    order = Order.objects.get(pk=pk)
    order.status = Order.OrderStatus.CANCELED
@@ -136,6 +137,7 @@ class OrderSerializer(ModelSerializer):
 
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def search_order(request):
    keyword = request.GET.get('keyword', '')
    order_list = Order.objects.filter(
@@ -147,6 +149,7 @@ def search_order(request):
    return Response(result)
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def get_order_by_id(request, pk):
    order = Order.objects.filter(pk=pk).first()
    if order:
